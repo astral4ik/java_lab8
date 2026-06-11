@@ -22,7 +22,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>itmo.lab.client.Client</mainClass>
+                  <mainClass>itmo.lab.client.gui.Launcher</mainClass>
                 </transformer>
               </transformers>
             </configuration>

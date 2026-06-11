@@ -1,24 +1,24 @@
 package itmo.lab;
 
-import itmo.lab.data.Worker;
-import itmo.lab.server.db.WorkerRepository;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
+
+import itmo.lab.data.Worker;
+import itmo.lab.server.db.WorkerRepository;
 
 /**
  * Потокобезопасная коллекция работников с синхронизацией через ReadWriteLock и персистентностью через БД.
  */
 public class WorkersCollection {
 
-    private TreeMap<Integer, Worker> workers = new TreeMap<>();
+    private final TreeMap<Integer, Worker> workers = new TreeMap<>();
     private final LocalDateTime creationTime;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();

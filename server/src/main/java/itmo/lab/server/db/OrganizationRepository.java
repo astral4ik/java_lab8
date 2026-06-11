@@ -26,6 +26,13 @@ public class OrganizationRepository {
         String sql = """
             INSERT INTO organizations(full_name, annual_turnover, employees_count, street, loc_x, loc_y, loc_z)
             VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT (full_name) DO UPDATE SET
+                annual_turnover = EXCLUDED.annual_turnover,
+                employees_count = EXCLUDED.employees_count,
+                street = EXCLUDED.street,
+                loc_x = EXCLUDED.loc_x,
+                loc_y = EXCLUDED.loc_y,
+                loc_z = EXCLUDED.loc_z
             RETURNING id
             """;
         try (Connection con = DatabaseManager.getConnection();

@@ -57,18 +57,18 @@ public class RequestHandler {
         if ("register".equals(cmd)) {
             boolean ok = authService.register(request.getLogin(), request.getPassword());
             if (ok) logger.info("Зарегистрирован новый пользователь: " + request.getLogin());
-            return new Response(ok, ok ? "Регистрация прошла успешно" : "ERROR: Login уже занят", null);
+            return new Response(ok, ok ? "OK_REGISTERED" : "ERR_LOGIN_TAKEN", null);
         }
 
         if ("login".equals(cmd)) {
             boolean ok = authService.authenticate(request.getLogin(), request.getPassword());
             if (ok) logger.info("Пользователь вошёл: " + request.getLogin());
             else logger.warn("Неудачная попытка входа: " + request.getLogin());
-            return new Response(ok, ok ? "Вход выполнен" : "ERROR: Неверный логин или пароль", null);
+            return new Response(ok, ok ? "OK_LOGIN" : "ERR_AUTH_FAILED", null);
         }
 
         if (!authService.authenticate(request.getLogin(), request.getPassword())) {
-            return new Response(false, "ERROR: Не авторизован. Выполните вход или зарегистрируйтесь.", null);
+            return new Response(false, "ERR_NOT_AUTH", null);
         }
 
         ServerCommand command = commands.get(cmd);

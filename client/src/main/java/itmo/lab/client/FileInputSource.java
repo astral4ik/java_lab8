@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Источник ввода из файла.
  */
-public class FileInputSource implements InputSource {
+public class FileInputSource implements InputSource, AutoCloseable {
 
     private final BufferedReader reader;
 

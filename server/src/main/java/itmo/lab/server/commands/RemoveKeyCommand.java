@@ -22,7 +22,7 @@ public class RemoveKeyCommand implements ServerCommand {
         int id = ((IdArgument) args).getId();
 
         if (!collection.isOwner(id, ownerLogin)) {
-            return new Response(false, "ERROR: Worker не найден или у вас нет прав на его удаление", null);
+            return new Response(false, "Нет прав на удаление: вы не являетесь владельцем", null);
         }
 
         collection.remove(id, ownerLogin);

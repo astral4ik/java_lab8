@@ -28,6 +28,10 @@ public class Client {
     private String currentLogin;
     private String currentPassword;
 
+    private volatile long nextRetryAt = 0;
+    private volatile long backoffMs   = 1_000;
+    private static final long MAX_BACKOFF_MS = 30_000;
+
     public Client() {
         this.console = new ClientConsole();
         this.commandManager = new CommandManager(this, this.console);
@@ -36,7 +40,7 @@ public class Client {
     /**
      * Устанавливает TCP-соединение с сервером и инициализирует потоки ввода-вывода.
      */
-    public void connect() throws IOException {
+    private void connect() throws IOException {
         socket = new Socket(SERVER_HOST, SERVER_PORT);
 
         out = new ObjectOutputStream(socket.getOutputStream());
@@ -165,29 +169,30 @@ public class Client {
         handleCommand(input);
     }
 
-    /**
-     * Пытается восстановить соединение с сервером.
-     *
-     * @return {@code true}, если переподключение прошло успешно
-     */
-    private boolean reconnect() {
-        console.printLine("Попытка переподключения...");
-        try {
-            if (socket != null && !socket.isClosed()) socket.close();
-        } catch (IOException ignored) {}
+    private void ensureConnected() throws IOException {
+        if (socket != null && !socket.isClosed() && socket.isConnected()) return;
 
-        for (int attempt = 1; attempt <= 3; attempt++) {
-            try {
-                Thread.sleep(2000L * attempt);
-                connect();
-                console.printLine("Переподключено успешно.");
-                return true;
-            } catch (IOException | InterruptedException e) {
-                console.printLine("Попытка " + attempt + " неудачна: " + e.getMessage());
-            }
+        long now = System.currentTimeMillis();
+        if (now < nextRetryAt) {
+            long sec = (nextRetryAt - now + 999) / 1000;
+            throw new IOException("Сервер недоступен. Повторите через " + sec + " с.");
         }
-        console.printLine("Не удалось восстановить соединение.");
-        return false;
+
+        try {
+            connect();
+            backoffMs = 1_000;
+        } catch (IOException e) {
+            nextRetryAt = System.currentTimeMillis() + backoffMs;
+            backoffMs = Math.min(backoffMs * 2, MAX_BACKOFF_MS);
+            throw e;
+        }
+    }
+
+    private void closeSocket() {
+        try { if (socket != null) socket.close(); } catch (IOException ignored) {}
+        socket = null;
+        out = null;
+        in = null;
     }
 
     /**
@@ -196,23 +201,22 @@ public class Client {
      * @param request запрос для отправки
      * @return ответ сервера или {@code null} при ошибке связи
      */
-    public Response sendRequest(Request request) {
+    public synchronized Response sendRequest(Request request) {
         try {
+            ensureConnected();
             out.writeObject(request);
             out.flush();
             return (Response) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            console.printLine("Ошибка связи с сервером: " + e.getMessage());
-            if (reconnect()) {
-                try {
-                    out.writeObject(request);
-                    out.flush();
-                    return (Response) in.readObject();
-                } catch (IOException | ClassNotFoundException ex) {
-                    console.printLine("Ошибка после переподключения: " + ex.getMessage());
-                }
+            closeSocket();
+            try {
+                ensureConnected();
+                out.writeObject(request);
+                out.flush();
+                return (Response) in.readObject();
+            } catch (IOException | ClassNotFoundException ex) {
+                throw new RuntimeException("Ошибка связи: " + ex.getMessage(), ex);
             }
-            return null;
         }
     }
 
@@ -244,6 +248,26 @@ public class Client {
         } catch (IOException e) {
             console.printLine("Ошибка закрытия: " + e.getMessage());
         }
+    }
+
+    public boolean isConnected() {
+        return socket != null && !socket.isClosed() && socket.isConnected();
+    }
+
+    public void tryConnect() throws IOException {
+        connect();
+        backoffMs   = 1_000;
+        nextRetryAt = 0;
+    }
+
+    public ClientConsole getConsole() {
+        return console;
+    }
+
+    public void setCredentials(String login, String password) {
+        this.currentLogin = login;
+        this.currentPassword = password;
+        this.console.setSession(login, password);
     }
 
     public String getCurrentLogin() {

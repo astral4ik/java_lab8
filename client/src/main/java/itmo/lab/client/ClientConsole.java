@@ -3,6 +3,7 @@ package itmo.lab.client;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 
 import itmo.lab.data.Address;
@@ -25,8 +26,14 @@ public class ClientConsole {
     private String currentLogin;
     private String currentPassword;
 
+    private Consumer<String> outputSink = System.out::println;
+
     public ClientConsole() {
         this.inputSource = new ConsoleInputSource();
+    }
+
+    public void setOutputSink(Consumer<String> sink) {
+        this.outputSink = sink;
     }
 
     public void setInputSource(InputSource newInputSource) {
@@ -49,21 +56,21 @@ public class ClientConsole {
      * Выводит строку с переносом в стандартный поток вывода.
      */
     public void printLine(String message) {
-        System.out.println(message);
+        outputSink.accept(message);
     }
 
     /**
      * Выводит строку без переноса в стандартный поток вывода.
      */
     public void print(String message) {
-        System.out.print(message);
+        outputSink.accept(message);
     }
 
     /**
      * Выводит сообщение с переносом строки.
      */
     public void printMessage(String message) {
-        System.out.println(message);
+        outputSink.accept(message);
     }
 
     /**
@@ -551,9 +558,6 @@ public class ClientConsole {
     }
 
     public void printAuth() {
-        printLine("═══════════════════════════════════");
-        printLine("           АВТОРИЗАЦИЯ");
-        printLine("═══════════════════════════════════");
         printLine("1. Login (вход)");
         printLine("2. Register (регистрация)");
     }

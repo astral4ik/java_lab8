@@ -27,7 +27,7 @@ public class UpdateCommand implements ServerCommand {
         worker.setId(id);
 
         if (!collection.isOwner(id, ownerLogin)) {
-            return new Response(false, "ERROR: Worker не найден или у вас нет прав на его изменение", null);
+            return new Response(false, "Нет прав на редактирование: вы не являетесь владельцем", null);
         }
 
         collection.update(worker, ownerLogin);

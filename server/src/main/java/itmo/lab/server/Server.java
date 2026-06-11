@@ -7,16 +7,15 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import itmo.lab.WorkersCollection;
 import itmo.lab.common.Request;
-import itmo.lab.common.Response;
 import itmo.lab.server.db.DatabaseManager;
 
 /**
@@ -82,21 +81,18 @@ public class Server {
                     break;
                 }
 
-                Future<Response> future =
-                    processPool.submit(() -> requestHandler.handle(request));
-
-                sendPool.submit(() -> {
-                    try {
-                        Response response = future.get();
-                        synchronized (out) {
-                            out.reset();
-                            out.writeObject(response);
-                            out.flush();
+                CompletableFuture.supplyAsync(() -> requestHandler.handle(request), processPool)
+                    .thenAcceptAsync(response -> {
+                        try {
+                            synchronized (out) {
+                                out.reset();
+                                out.writeObject(response);
+                                out.flush();
+                            }
+                        } catch (IOException e) {
+                            logger.error("ERROR при отправке ответа: " + e.getMessage());
                         }
-                    } catch (Exception e) {
-                        logger.error("ERROR при отправке ответа: " + e.getMessage());
-                    }
-                });
+                    }, sendPool);
             }
 
         } catch (IOException | ClassNotFoundException e) {

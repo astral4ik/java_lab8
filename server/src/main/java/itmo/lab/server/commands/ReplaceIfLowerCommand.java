@@ -26,7 +26,7 @@ public class ReplaceIfLowerCommand implements ServerCommand {
         Worker newWorker = (Worker) ((WorkerArgument) arr[1]).getWorker();
 
         if (!collection.isOwner(id, ownerLogin)) {
-            return new Response(false, "ERROR: Worker не найден или у вас нет прав на его изменение", null);
+            return new Response(false, "Нет прав на редактирование: вы не являетесь владельцем", null);
         }
 
         Worker existing = collection.get(id);
