@@ -89,22 +89,21 @@ public class WorkersTablePanel extends BorderPane {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void buildColumns() {
-        idCol     = colTyped("col.id",           w -> w.getId(),
-                                                  String::valueOf);
-        nameCol   = col("col.name",              w -> w.getName() != null ? w.getName() : "");
-        xCol      = colTyped("col.x",            w -> w.getCoordinates() != null ? w.getCoordinates().getX() : null,
-                                                  n -> I18n.formatNumber(n));
-        yCol      = colTyped("col.y",            w -> w.getCoordinates() != null ? w.getCoordinates().getY() : null,
-                                                  n -> I18n.formatNumber(n));
-        salaryCol = colTyped("col.salary",       w -> w.getSalary(),
-                                                  n -> I18n.formatNumber(n));
-        dateCol   = colTyped("col.startDate",    w -> w.getStartDate(),
-                                                  d -> I18n.formatDate(d));
-        posCol    = col("col.position",          w -> w.getPosition() != null ? w.getPosition().name() : I18n.t("none"));
-        statusCol = col("col.status",            w -> w.getStatus() != null ? w.getStatus().name() : I18n.t("none"));
-        orgCol    = col("col.organization",      w -> w.getOrganization() != null && w.getOrganization().getFullName() != null
-                                                      ? w.getOrganization().getFullName() : "");
-        ownerCol  = col("col.owner",             w -> w.getOwnerLogin() != null ? w.getOwnerLogin() : "");
+        idCol = colTyped("col.id", w -> w.getId(), String::valueOf);
+        nameCol = col("col.name", w -> w.getName() != null ? w.getName() : "");
+        xCol = colTyped("col.x",
+                w -> w.getCoordinates() != null ? w.getCoordinates().getX() : null,
+                n -> I18n.formatNumber(n));
+        yCol = colTyped("col.y",
+                w -> w.getCoordinates() != null ? w.getCoordinates().getY() : null,
+                n -> I18n.formatNumber(n));
+        salaryCol = colTyped("col.salary", w -> w.getSalary(), n -> I18n.formatNumber(n));
+        dateCol = colTyped("col.startDate", w -> w.getStartDate(), d -> I18n.formatDate(d));
+        posCol = col("col.position", w -> w.getPosition() != null ? w.getPosition().name() : I18n.t("none"));
+        statusCol = col("col.status", w -> w.getStatus() != null ? w.getStatus().name() : I18n.t("none"));
+        orgCol = col("col.organization", w -> w.getOrganization() != null && w.getOrganization().getFullName() != null
+                ? w.getOrganization().getFullName() : "");
+        ownerCol = col("col.owner", w -> w.getOwnerLogin() != null ? w.getOwnerLogin() : "");
 
         int[] widths = {50, 140, 60, 60, 90, 130, 110, 140, 150, 110};
         TableColumn[] cols = {idCol, nameCol, xCol, yCol, salaryCol, dateCol, posCol, statusCol, orgCol, ownerCol};

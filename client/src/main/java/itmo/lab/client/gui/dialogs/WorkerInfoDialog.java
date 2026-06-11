@@ -52,8 +52,8 @@ public class WorkerInfoDialog {
         fields.getColumnConstraints().addAll(lc, vc);
 
         int row = 0;
-        row = addRow(fields, row, "info.id",           String.valueOf(w.getId()));
-        row = addRow(fields, row, "info.name",         w.getName() != null ? w.getName() : I18n.t("none"));
+        row = addRow(fields, row, "info.id", String.valueOf(w.getId()));
+        row = addRow(fields, row, "info.name", w.getName() != null ? w.getName() : I18n.t("none"));
         if (w.getCoordinates() != null) {
             row = addRow(fields, row, "info.coords",
                     "X=" + w.getCoordinates().getX() + ", Y=" + w.getCoordinates().getY());
@@ -61,7 +61,7 @@ public class WorkerInfoDialog {
         row = addRow(fields, row, "info.salary",
                 I18n.formatNumber(w.getSalary()) + I18n.t("info.salarySuffix"));
         if (w.getStartDate() != null)
-            row = addRow(fields, row, "info.startDate",  I18n.formatDate(w.getStartDate()));
+            row = addRow(fields, row, "info.startDate", I18n.formatDate(w.getStartDate()));
         if (w.getCreationDate() != null)
             row = addRow(fields, row, "info.creationDate", I18n.formatDate(w.getCreationDate()));
         row = addRow(fields, row, "info.position",
@@ -119,7 +119,7 @@ public class WorkerInfoDialog {
     }
 
     /** Задаёт обработчик, вызываемый при нажатии кнопки «Редактировать». */
-    public void setOnEdit(Runnable onEdit)     { this.onEdit = onEdit; }
+    public void setOnEdit(Runnable onEdit) { this.onEdit = onEdit; }
     /** Задаёт обработчик, вызываемый при нажатии кнопки «Удалить». */
     public void setOnDelete(Runnable onDelete) { this.onDelete = onDelete; }
 

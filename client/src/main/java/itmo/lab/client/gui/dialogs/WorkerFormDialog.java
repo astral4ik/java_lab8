@@ -23,24 +23,24 @@ public class WorkerFormDialog {
 
     private Worker result = null;
 
-    private final TextField nameField       = new TextField();
-    private final Spinner<Integer> xSpin    = new Spinner<>(-Integer.MAX_VALUE, 717, 0, 1);
-    private final Spinner<Double>  ySpin    = new Spinner<>(-1e9, 1e9, 0.0, 1.0);
-    private final Spinner<Integer> salSpin  = new Spinner<>(1, Integer.MAX_VALUE, 1, 1);
-    private final TextField startDateFld    = new TextField();
-    private final ComboBox<Position> posCb  = new ComboBox<>();
+    private final TextField nameField = new TextField();
+    private final Spinner<Integer> xSpin = new Spinner<>(-Integer.MAX_VALUE, 717, 0, 1);
+    private final Spinner<Double> ySpin = new Spinner<>(-1e9, 1e9, 0.0, 1.0);
+    private final Spinner<Integer> salSpin = new Spinner<>(1, Integer.MAX_VALUE, 1, 1);
+    private final TextField startDateFld = new TextField();
+    private final ComboBox<Position> posCb = new ComboBox<>();
     private final ComboBox<String> statusCb = new ComboBox<>();
 
-    private final CheckBox orgCheck              = new CheckBox();
-    private final TextField orgNameFld           = new TextField();
-    private final Spinner<Integer> orgTurnSpin   = new Spinner<>(0, Integer.MAX_VALUE, 0, 1);
-    private final Spinner<Integer> orgEmpSpin    = new Spinner<>(1, Integer.MAX_VALUE, 1, 1);
-    private final TextField orgStreetFld         = new TextField();
+    private final CheckBox orgCheck = new CheckBox();
+    private final TextField orgNameFld = new TextField();
+    private final Spinner<Integer> orgTurnSpin = new Spinner<>(0, Integer.MAX_VALUE, 0, 1);
+    private final Spinner<Integer> orgEmpSpin = new Spinner<>(1, Integer.MAX_VALUE, 1, 1);
+    private final TextField orgStreetFld = new TextField();
 
-    private final CheckBox townCheck             = new CheckBox();
-    private final Spinner<Double>  townXSpin     = new Spinner<>((double) Long.MIN_VALUE, (double) Long.MAX_VALUE, 0.0, 1.0);
-    private final Spinner<Integer> townYSpin     = new Spinner<>(Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 1);
-    private final Spinner<Integer> townZSpin     = new Spinner<>(Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 1);
+    private final CheckBox townCheck = new CheckBox();
+    private final Spinner<Double> townXSpin = new Spinner<>((double) Long.MIN_VALUE, (double) Long.MAX_VALUE, 0.0, 1.0);
+    private final Spinner<Integer> townYSpin = new Spinner<>(Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 1);
+    private final Spinner<Integer> townZSpin = new Spinner<>(Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 1);
 
     private final Stage stage;
 
@@ -106,13 +106,13 @@ public class WorkerFormDialog {
         gp.getColumnConstraints().addAll(lc, fc);
 
         int row = 0;
-        row = addField(gp, row, "form.name",     nameField);
-        row = addField(gp, row, "form.coordX",   xSpin);
-        row = addField(gp, row, "form.coordY",   ySpin);
-        row = addField(gp, row, "form.salary",   salSpin);
-        row = addField(gp, row, "form.startDate",startDateFld);
+        row = addField(gp, row, "form.name", nameField);
+        row = addField(gp, row, "form.coordX", xSpin);
+        row = addField(gp, row, "form.coordY", ySpin);
+        row = addField(gp, row, "form.salary", salSpin);
+        row = addField(gp, row, "form.startDate", startDateFld);
         row = addField(gp, row, "form.position", posCb);
-        row = addField(gp, row, "form.status",   statusCb);
+        row = addField(gp, row, "form.status", statusCb);
 
         orgCheck.textProperty().bind(I18n.b("form.addOrg"));
         gp.add(orgCheck, 0, row++, 2, 1);
@@ -138,10 +138,10 @@ public class WorkerFormDialog {
         gp.getColumnConstraints().addAll(lc, fc);
 
         int row = 0;
-        row = addField(gp, row, "form.orgName",     orgNameFld);
+        row = addField(gp, row, "form.orgName", orgNameFld);
         row = addField(gp, row, "form.orgTurnover", orgTurnSpin);
-        row = addField(gp, row, "form.orgEmployees",orgEmpSpin);
-        row = addField(gp, row, "form.orgStreet",   orgStreetFld);
+        row = addField(gp, row, "form.orgEmployees", orgEmpSpin);
+        row = addField(gp, row, "form.orgStreet", orgStreetFld);
 
         townCheck.textProperty().bind(I18n.b("form.addTown"));
         gp.add(townCheck, 0, row++, 2, 1);

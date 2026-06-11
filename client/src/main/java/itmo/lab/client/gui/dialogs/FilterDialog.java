@@ -99,16 +99,16 @@ public class FilterDialog {
         grid.setPadding(new Insets(12));
 
         int row = 0;
-        grid.add(lbl("filter.name"),       0, row); grid.add(nameField,                          1, row++);
-        grid.add(lbl("filter.idMin"),      0, row); grid.add(rangebox(idMinField, idMaxField),    1, row++);
-        grid.add(lbl("filter.salaryMin"),  0, row); grid.add(rangebox(salaryMinField, salaryMaxField), 1, row++);
-        grid.add(lbl("filter.coordX"),     0, row); grid.add(rangebox(coordXMinField, coordXMaxField), 1, row++);
-        grid.add(lbl("filter.coordY"),     0, row); grid.add(rangebox(coordYMinField, coordYMaxField), 1, row++);
-        grid.add(lbl("filter.dateMin"),    0, row); grid.add(rangebox(dateMinPicker, dateMaxPicker), 1, row++);
-        grid.add(lbl("filter.position"),   0, row); grid.add(posRow,                             1, row++);
-        grid.add(lbl("filter.status"),     0, row); grid.add(statusCol,                          1, row++);
-        grid.add(lbl("filter.organization"),0, row); grid.add(orgLB.box(),                       1, row++);
-        grid.add(lbl("filter.owner"),      0, row); grid.add(ownerLB.box(),                      1, row);
+        grid.add(lbl("filter.name"), 0, row); grid.add(nameField, 1, row++);
+        grid.add(lbl("filter.idMin"), 0, row); grid.add(rangebox(idMinField, idMaxField), 1, row++);
+        grid.add(lbl("filter.salaryMin"), 0, row); grid.add(rangebox(salaryMinField, salaryMaxField), 1, row++);
+        grid.add(lbl("filter.coordX"), 0, row); grid.add(rangebox(coordXMinField, coordXMaxField), 1, row++);
+        grid.add(lbl("filter.coordY"), 0, row); grid.add(rangebox(coordYMinField, coordYMaxField), 1, row++);
+        grid.add(lbl("filter.dateMin"), 0, row); grid.add(rangebox(dateMinPicker, dateMaxPicker), 1, row++);
+        grid.add(lbl("filter.position"), 0, row); grid.add(posRow, 1, row++);
+        grid.add(lbl("filter.status"), 0, row); grid.add(statusCol, 1, row++);
+        grid.add(lbl("filter.organization"), 0, row); grid.add(orgLB.box(), 1, row++);
+        grid.add(lbl("filter.owner"), 0, row); grid.add(ownerLB.box(), 1, row);
 
         ColumnConstraints cc0 = new ColumnConstraints();
         cc0.setMinWidth(120);
@@ -116,24 +116,24 @@ public class FilterDialog {
         cc1.setHgrow(Priority.ALWAYS);
         grid.getColumnConstraints().addAll(cc0, cc1);
 
-        Button applyBtn  = new Button(I18n.t("filter.apply"));
-        Button resetBtn  = new Button(I18n.t("filter.reset"));
+        Button applyBtn = new Button(I18n.t("filter.apply"));
+        Button resetBtn = new Button(I18n.t("filter.reset"));
         Button cancelBtn = new Button(I18n.t("form.cancel"));
 
         applyBtn.setDefaultButton(true);
         applyBtn.setOnAction(e -> {
             WorkerFilter f = new WorkerFilter();
-            f.name      = nameField.getText().trim();
-            f.idMin     = parseInt(idMinField.getText());
-            f.idMax     = parseInt(idMaxField.getText());
+            f.name = nameField.getText().trim();
+            f.idMin = parseInt(idMinField.getText());
+            f.idMax = parseInt(idMaxField.getText());
             f.salaryMin = parseDouble(salaryMinField.getText());
             f.salaryMax = parseDouble(salaryMaxField.getText());
             f.coordXMin = parseDouble(coordXMinField.getText());
             f.coordXMax = parseDouble(coordXMaxField.getText());
             f.coordYMin = parseDouble(coordYMinField.getText());
             f.coordYMax = parseDouble(coordYMaxField.getText());
-            f.dateMin   = dateMinPicker.getValue();
-            f.dateMax   = dateMaxPicker.getValue();
+            f.dateMin = dateMinPicker.getValue();
+            f.dateMax = dateMaxPicker.getValue();
             posBoxes.forEach((p, cb)  -> { if (cb.isSelected()) f.positions.add(p); });
             statusBoxes.forEach((s, cb) -> { if (cb.isSelected()) f.statuses.add(s); });
             f.organizations.addAll(orgLB.list().getSelectionModel().getSelectedItems());
